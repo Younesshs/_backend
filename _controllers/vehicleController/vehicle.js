@@ -40,7 +40,6 @@ const getAllVehiclesController = async (req, res) => {
 				},
 				vehicleStatus: {
 					...vehicle.vehicleStatus,
-					lastLocation: vehicleLocation ? vehicleLocation.lastLocation : null,
 				},
 			};
 		});
@@ -94,10 +93,6 @@ const getVehiclesController = async (req, res) => {
 						? vehicleLocation.locationHistory
 						: [],
 				},
-				vehicleStatus: {
-					...vehicle.vehicleStatus,
-					lastLocation: vehicleLocation ? vehicleLocation.lastLocation : null,
-				},
 			};
 		});
 
@@ -149,10 +144,6 @@ const getVehicleController = async (req, res) => {
 			gpsTracker: {
 				...vehicle.gpsTracker,
 				locationHistory: vehicleLocation ? vehicleLocation.locationHistory : [],
-			},
-			vehicleStatus: {
-				...vehicle.vehicleStatus,
-				lastLocation: vehicleLocation ? vehicleLocation.lastLocation : null,
 			},
 		};
 

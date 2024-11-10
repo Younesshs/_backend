@@ -66,6 +66,7 @@ async function simulateGPSUpdates() {
 					);
 					// Mettre à jour le fichier de localisation
 					updateLocationFile(trackerNumber, newPosition);
+					// TODO: UPDATE DATABASE LASTLOCATION
 				} else {
 					console.error(
 						`Pas de localisation initiale pour le véhicule avec le tracker ${trackerNumber}`
