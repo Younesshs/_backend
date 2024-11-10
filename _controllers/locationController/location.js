@@ -1,8 +1,23 @@
-const { response } = require("express");
 const fs = require("fs");
 const path = require("path");
 
-async function getLocationsVehicleController(gpsTrackerNumberList) {
+const getLocationsVehicleController = async (req, res) => {
+	const gpsTrackerNumberList = req.params.gpsTrackerNumberList.split(",");
+
+	try {
+		const locationVehicles = await getLocationsVehicle(gpsTrackerNumberList);
+
+		// Retourner une réponse avec les données des véhicules
+		res.status(200).json(locationVehicles);
+	} catch (error) {
+		console.error("Erreur lors de la mise à jour du véhicule :", error);
+		res.status(500).json({
+			message: "Erreur serveur lors de la mise à jour du véhicule.",
+		});
+	}
+};
+
+async function getLocationsVehicle(gpsTrackerNumberList) {
 	const locations = [];
 	try {
 		for (const gpsTrackerNumber of gpsTrackerNumberList) {
@@ -19,7 +34,23 @@ async function getLocationsVehicleController(gpsTrackerNumberList) {
 	}
 }
 
-async function getLocationVehicleController(gpsTrackerNumber) {
+const getLocationVehicleController = async (req, res) => {
+	const gpsTrackerNumber = req.params.gpsTrackerNumber;
+
+	try {
+		const locationVehicle = await getLocationVehicle(gpsTrackerNumber);
+
+		// Retourner une réponse avec les données du véhicules
+		res.status(200).json(locationVehicle);
+	} catch (error) {
+		console.error("Erreur lors de la mise à jour du véhicule :", error);
+		res.status(500).json({
+			message: "Erreur serveur lors de la mise à jour du véhicule.",
+		});
+	}
+};
+
+async function getLocationVehicle(gpsTrackerNumber) {
 	try {
 		// Obtenir les données de localisation pour un seul véhicule
 		const vehicleData = await readFile(gpsTrackerNumber, 1);
@@ -33,6 +64,28 @@ async function getLocationVehicleController(gpsTrackerNumber) {
 		return error.message;
 	}
 }
+
+const readFileController = async (req, res) => {
+	const gpsTrackerNumber = req.params.gpsTrackerNumber;
+	const numberOfLocationHistories = Number(
+		req.params.numberOfLocationHistories
+	);
+
+	try {
+		const vehiclesData = await readFile(
+			gpsTrackerNumber,
+			numberOfLocationHistories
+		);
+
+		// Retourner une réponse avec les données des véhicules
+		res.status(200).json(vehiclesData);
+	} catch (error) {
+		console.error("Erreur lors de la mise à jour des véhicule :", error);
+		res.status(500).json({
+			message: "Erreur serveur lors de la mise à jour du véhicule.",
+		});
+	}
+};
 
 async function readFile(gpsTrackerNumber, numberOfLocationHistories = 10) {
 	const filePath = path.join(
@@ -209,7 +262,10 @@ async function addInitialFile(gpsTrackerNumber, initialLocation) {
 
 module.exports = {
 	getLocationsVehicleController,
+	getLocationsVehicle,
 	getLocationVehicleController,
+	getLocationVehicle,
+	readFileController,
 	readFile,
 	writeFile,
 	archiveFile,

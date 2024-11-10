@@ -20,7 +20,7 @@ const getAllVehiclesController = async (req, res) => {
 		);
 
 		// Récupère les localisations pour chaque numéro de tracker via locationOfVehicleController
-		const locations = await locationsController.getLocationsVehicleController(
+		const locations = await locationsController.getLocationsVehicle(
 			gpsTrackerNumberList
 		);
 
@@ -71,13 +71,13 @@ const getVehiclesController = async (req, res) => {
 
 		const vehicles = await VehicleModel.find({ _id: { $in: vehicleIdsList } });
 
-		const gpsTrackerNumbers = vehicles.map(
+		const gpsTrackerNumberList = vehicles.map(
 			(vehicle) => vehicle.gpsTracker.number
 		);
 
 		// Récupération des informations de localisation pour chaque tracker
-		const locations = await locationsController.getLocationsVehicleController(
-			gpsTrackerNumbers
+		const locations = await locationsController.getLocationsVehicle(
+			gpsTrackerNumberList
 		);
 
 		// Ajout de la localisation actuelle à chaque véhicule
@@ -135,7 +135,7 @@ const getVehicleController = async (req, res) => {
 		const gpsTrackerNumber = vehicle.gpsTracker.number;
 
 		// Obtenir la localisation du véhicule via le contrôleur de localisation
-		const locations = await locationsController.getLocationVehicleController(
+		const locations = await locationsController.getLocationVehicle(
 			gpsTrackerNumber
 		);
 
