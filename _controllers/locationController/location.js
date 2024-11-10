@@ -6,7 +6,7 @@ async function getLocationsVehicleController(gpsTrackerNumberList) {
 	const locations = [];
 	try {
 		for (const gpsTrackerNumber of gpsTrackerNumberList) {
-			const vehicleData = await readFile(gpsTrackerNumber, 5);
+			const vehicleData = await readFile(gpsTrackerNumber, 1);
 			locations.push(vehicleData);
 		}
 		return locations;
@@ -22,7 +22,7 @@ async function getLocationsVehicleController(gpsTrackerNumberList) {
 async function getLocationVehicleController(gpsTrackerNumber) {
 	try {
 		// Obtenir les données de localisation pour un seul véhicule
-		const vehicleData = await readFile(gpsTrackerNumber);
+		const vehicleData = await readFile(gpsTrackerNumber, 1);
 
 		return vehicleData;
 	} catch (error) {

@@ -218,31 +218,17 @@ const addVehicleController = async (req, res) => {
 /**
  * Fonction updateVehicleController()
  *
- * Met à jour les informations d'un véhicule spécifique dans la base de données
- * en utilisant les données fournies dans le corps de la requête.
+ * Description
  *
  * @param {String} req.params.vehicleId - Identifiant du véhicule à mettre à jour
  * @param {Object} req.body - Nouvelles informations du véhicule
  * @returns {Object} Message confirmant la mise à jour réussie ou un message d'erreur
  */
 const updateVehicleController = async (req, res) => {
+	const vehicleId = req.params.vehicleId;
+	const newVehicleData = req.body;
 	try {
-		const vehicleId = req.params.vehicleId;
-		const newVehicleData = req.body;
-
-		// Mettre à jour les informations du véhicule dans la base de données
-		const updatedVehicle = await VehicleModel.findByIdAndUpdate(
-			vehicleId,
-			newVehicleData,
-			{ new: true }
-		);
-
-		// Vérifier si le véhicule existe
-		if (!updatedVehicle) {
-			return res.status(404).json({
-				message: "Véhicule non trouvé.",
-			});
-		}
+		await updateVehicle(vehicleId, newVehicleData);
 
 		// Retourner une réponse avec les nouvelles données du véhicule
 		res.status(200).json({
@@ -255,6 +241,22 @@ const updateVehicleController = async (req, res) => {
 		});
 	}
 };
+
+async function updateVehicle(vehicleId, newVehicleData) {
+	// Mettre à jour les informations du véhicule dans la base de données
+	const updatedVehicle = await VehicleModel.findByIdAndUpdate(
+		vehicleId,
+		newVehicleData,
+		{ new: true }
+	);
+
+	// Vérifier si le véhicule existe
+	if (!updatedVehicle) {
+		return res.status(404).json({
+			message: "Véhicule non trouvé.",
+		});
+	}
+}
 
 /**
  * Fonction removeVehicleController()
@@ -318,5 +320,6 @@ module.exports = {
 	getVehicleController,
 	addVehicleController,
 	updateVehicleController,
+	updateVehicle,
 	removeVehicleController,
 };
