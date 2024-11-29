@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const serverInfo = require("./_config/config");
+const serverInfo = require("../_config/config");
 
 const uri = `${serverInfo.db.server}://${serverInfo.db.user}:${serverInfo.db.password}@${serverInfo.db.host}/${serverInfo.db.database}`;
 const client = new MongoClient(uri);

@@ -1,8 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
-const VehicleModel = require("./_models/vehicleModel");
-const serverInfo = require("./_config/config");
+const VehicleModel = require("../_models/vehicleModel");
+const serverInfo = require("../_config/config");
 
 // Connexion à la base de données MongoDB avec Mongoose
 const uri = `${serverInfo.db.server}://${serverInfo.db.user}:${serverInfo.db.password}@${serverInfo.db.host}/${serverInfo.db.database}`;

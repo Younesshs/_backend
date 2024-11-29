@@ -4,6 +4,7 @@ const bodyparser = require("body-parser");
 const cors = require("cors");
 const vehicleRoutes = require("./_routes/vehicleRoutes");
 const locationRoutes = require("./_routes/locationRoutes");
+const userRoutes = require("./_routes/userRoutes");
 const serverInfo = require("./_config/config.js");
 const connectDB = require("./_utils/db");
 
@@ -26,6 +27,7 @@ app.use(
 
 app.use("/vehicle", vehicleRoutes);
 app.use("/location", locationRoutes);
+app.use("/user", userRoutes);
 
 app.listen(serverInfo.port.server, () => {
 	console.log();
