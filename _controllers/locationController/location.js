@@ -137,6 +137,7 @@ async function readFile(gpsTrackerNumber, numberOfLocationHistories = 10) {
 			locationHistory,
 		};
 	} catch (error) {
+		console.log(gpsTrackerNumber);
 		console.error(
 			`Erreur lors de la lecture du fichier ${gpsTrackerNumber}:`,
 			error
