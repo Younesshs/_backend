@@ -11,7 +11,7 @@ mongoose
 	.then(() => console.log("Connexion à MongoDB réussie !"))
 	.catch((error) => console.error("Erreur de connexion à MongoDB :", error));
 
-const locationDir = path.join(__dirname, "data/vehiclesLocations");
+const locationDir = path.join(__dirname, "../data/vehiclesLocations");
 const intervalInMs = 10000; // Intervalle de 5 secondes
 
 // Fonction pour générer une position GPS aléatoire autour d'un point de référence
