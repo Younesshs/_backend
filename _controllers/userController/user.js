@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const userModel = require("../../_models/UserModel");
+const userModel = require("../../_models/userModel");
+const bcrypt = require("bcrypt");
 
 const getUserController = async (req, res) => {
 	try {
@@ -22,30 +22,59 @@ const getUserController = async (req, res) => {
 	}
 };
 
-// TODO: vérifier les fonctions add, update, remove - aucun test effectuer (POSTMAN)
-
+// TODO: APRES DEV ADD COMPANY GERER LA CREATION D'UN COMPTE ADMIN
 const addUserController = async (req, res) => {
 	try {
-		const { _id, email, configurations } = req.body;
-		if (!_id || !email) {
-			return res.status(400).json({ message: "Champs requis manquants" });
+		const { email, firstname, lastname, pseudonyme, sexe, password, company } =
+			req.body;
+
+		if (
+			(!company, !email, !firstname, !lastname, !pseudonyme, !sexe, !password)
+		) {
+			return res
+				.status(400)
+				.json({ message: "Champs obligatoires manquant !" });
 		}
+
+		const configurations = {
+			theme: "light",
+			language: "fr",
+			timeAutoReload: true,
+		};
+
+		// Vérification si l'utilisateur existe déjà
+		const existingUser = await userModel.findOne({ firstname });
+		if (existingUser) {
+			return res
+				.status(409)
+				.json({ message: "Cette utilisateur existe déja !" });
+		}
+
+		// Hash du mot de passe
+		const hashedPassword = await bcrypt.hash(password, 10);
+
+		const role = "admin";
 
 		// Création d'un nouvel utilisateur
 		const newUser = new userModel({
-			_id,
 			email,
 			configurations,
+			firstname,
+			lastname,
+			pseudonyme,
+			sexe,
+			password: hashedPassword,
+			company,
+			role,
 		});
+
 		await newUser.save();
+
 		return res
 			.status(201)
 			.json({ message: "Utilisateur créé avec succès", user: newUser });
 	} catch (error) {
 		console.error("Erreur lors de l'ajout de l'utilisateur :", error);
-		if (error.code === 11000) {
-			return res.status(400).json({ message: "Email déjà utilisé" });
-		}
 		return res.status(500).json({ message: "Erreur serveur", error });
 	}
 };

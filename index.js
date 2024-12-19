@@ -3,6 +3,7 @@ const session = require("express-session");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const vehicleRoutes = require("./_routes/vehicleRoutes");
+const companyRoutes = require("./_routes/companyRoutes");
 const locationRoutes = require("./_routes/locationRoutes");
 const userRoutes = require("./_routes/userRoutes");
 const serverInfo = require("./_config/config.js");
@@ -27,6 +28,7 @@ app.use(
 
 app.use("/vehicle", vehicleRoutes);
 app.use("/location", locationRoutes);
+app.use("/company", companyRoutes);
 app.use("/user", userRoutes);
 
 app.listen(serverInfo.port.server, () => {
