@@ -1,7 +1,7 @@
 const companyModels = require("../../_models/companyModel");
 const bcrypt = require("bcrypt");
 
-const newAccountController = async (req, res) => {
+const newCompanyController = async (req, res) => {
 	// TODO: FINIR LA PARTIE FRONTEND - CREE USER PROFILE (ADMIN DE L'ENTREPRISE)
 	try {
 		const { company } = req.body;
@@ -9,7 +9,7 @@ const newAccountController = async (req, res) => {
 		if (!company) {
 			return res
 				.status(400)
-				.json({ message: "Champs obligatoires 'company' manquant" });
+				.json({ message: "Champs obligatoires 'company' manquant !" });
 		}
 
 		// Vérification si la entreprise existe déjà
@@ -38,7 +38,7 @@ const newAccountController = async (req, res) => {
 		return res.status(201).json({
 			message: "Entreprise créé avec succès !",
 			company: company,
-			tempPassword: hashedPassword,
+			tempPassword: tempPassword,
 		});
 	} catch (error) {
 		console.error("Erreur lors de l'ajout de l'entreprise :", error);
@@ -47,5 +47,5 @@ const newAccountController = async (req, res) => {
 };
 
 module.exports = {
-	newAccountController,
+	newCompanyController,
 };
