@@ -13,13 +13,13 @@ async function run() {
 
 		const companysData = [
 			{
-				name: "you services",
+				companyName: "you services",
 				password: "company_password",
 				isConfirmed: false,
 				createdAt: "2024-12-18T10:30:00Z",
 			},
 			{
-				name: "innoya services",
+				companyName: "innoya services",
 				password: "company_password",
 				isConfirmed: false,
 				createdAt: "2024-12-18T10:30:00Z",

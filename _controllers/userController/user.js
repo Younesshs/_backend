@@ -22,7 +22,6 @@ const getUserController = async (req, res) => {
 	}
 };
 
-// TODO: APRES DEV ADD COMPANY GERER LA CREATION D'UN COMPTE ADMIN
 const addUserController = async (req, res) => {
 	try {
 		const { email, firstname, lastname, pseudonyme, sexe, password, company } =
@@ -79,6 +78,7 @@ const addUserController = async (req, res) => {
 	}
 };
 
+// TODO: Vérifier si la fonction de mise à jour de l'utilisateur est correcte
 const updateUserController = async (req, res) => {
 	try {
 		const userId = req.params.id;
@@ -108,6 +108,7 @@ const updateUserController = async (req, res) => {
 	}
 };
 
+// TODO: Vérifier si la fonction de suppression de l'utilisateur est correcte
 const removeUserController = async (req, res) => {
 	try {
 		const userId = req.params.id;
