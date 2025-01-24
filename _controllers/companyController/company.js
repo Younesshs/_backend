@@ -3,7 +3,8 @@ const userModel = require("../../_models/userModel");
 const archivedCompanyModel = require("../../_models/archivedCompanyModel");
 const archivedUserModel = require("../../_models/archivedUserModel");
 const bcrypt = require("bcrypt");
-const { addUserController } = require("../userController/user");
+const jwt = require("jsonwebtoken");
+const serverInfo = require("../../_config/config");
 
 const regeneratePassword = async (companyName) => {
 	const timestamp = Math.floor(Date.now() / 1000); // Horodatage en secondes
@@ -295,7 +296,6 @@ const restoreCompanyArchivedController = async (req, res) => {
 	}
 };
 
-// TODO: FINIR LA FONCTION FIRSTCONNECTIONCOMPANYCONTROLLER
 const firstConnectionCompanyController = async (req, res) => {
 	try {
 		const { companyName, password } = req.body;
@@ -329,21 +329,28 @@ const firstConnectionCompanyController = async (req, res) => {
 			});
 		}
 
-		// TODO: FINIR LA FONCTION FIRSTCONNECTIONCOMPANYCONTROLLER
-
 		// Mise à jour du champ updatedAt
 		company.updatedAt = new Date();
 		await company.save();
+
+		// Génération du token JWT
+		const companyTokenPayload = {
+			companyId: company._id,
+			companyName: company.companyName,
+			companyCreatedAt: company.createdAt,
+			companyUpdatedAt: company.updatedAt,
+		};
+
+		const companyToken = jwt.sign(companyTokenPayload, serverInfo.jwt.secret, {
+			expiresIn: "2h", // Expiration du token (2 heures dans cet exemple)
+		});
 
 		// Si la connexion est réussie
 		return res.status(200).json({
 			response: true,
 			message: "Connexion réussie !",
-			companyToken: "fake-jwt-first-connection",
-			companyExpiration: 600000, // 2 heures 7200000
-			companyId: company._id,
-			companyName: company.name,
-			companyCreatedAt: company.createdAt,
+			companyToken: companyToken,
+			companyExpiration: 7200000, // 2 heures
 			companyIsConfirmed: company.isConfirmed,
 		});
 	} catch (error) {
@@ -356,7 +363,7 @@ const firstConnectionCompanyController = async (req, res) => {
 	}
 };
 
-// TODO: SIMPLIFIER LA FONCTION CONFIRMCOMPANYCONTROLLER
+// TODO: Simplifier la fonction confirm-company-controller
 const confirmCompanyController = async (req, res) => {
 	try {
 		const { confirmCompanyForm } = req.body;
@@ -409,10 +416,14 @@ const confirmCompanyController = async (req, res) => {
 				role: "admin",
 			});
 
+			// Hash du mot de passe
+			const hashedPassword = await bcrypt.hash(confirmCompanyForm.password, 10);
+
 			if (user) {
 				user.firstname = confirmCompanyForm.fname;
 				user.lastname = confirmCompanyForm.lname;
 				user.email = confirmCompanyForm.email;
+				user.password = hashedPassword;
 				user.address = confirmCompanyForm.address;
 				user.phone = confirmCompanyForm.phone;
 				user.pseudonyme = confirmCompanyForm.pseudonyme;
@@ -435,10 +446,14 @@ const confirmCompanyController = async (req, res) => {
 				role: "admin",
 			});
 
+			// Hash du mot de passe
+			const hashedPassword = await bcrypt.hash(confirmCompanyForm.password, 10);
+
 			if (user) {
 				user.firstname = confirmCompanyForm.fname;
 				user.lastname = confirmCompanyForm.lname;
 				user.email = confirmCompanyForm.email;
+				user.password = hashedPassword;
 				user.address = confirmCompanyForm.address;
 				user.phone = confirmCompanyForm.phone;
 				user.pseudonyme = confirmCompanyForm.pseudonyme;
