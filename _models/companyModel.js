@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 
 const companysSchema = new Schema({
 	companyName: { type: String, required: true },
-	password: { type: String, required: false }, // Vous devrez hasher ce mot de passe avant de l'enregistrer
+	password: { type: String, required: true }, // Vous devrez hasher ce mot de passe avant de l'enregistrer
 	isConfirmed: { type: Boolean, default: false },
 	userId: { type: Schema.Types.ObjectId, ref: "users", required: true },
+	siret: { type: String, sparse: true },
 	updatedAt: { type: Date, default: Date.now },
 	createdAt: { type: Date, default: Date.now },
 });

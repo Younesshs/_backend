@@ -58,10 +58,13 @@ const newCompanyController = async (req, res) => {
 
 		// Create a new user with the same password as the company
 		const newUser = new userModel({
-			email: `${companyName}.temp@temp.temp`,
-			firstname: `${companyName}.tempfname`,
-			lastname: `${companyName}.templname`,
-			pseudonyme: `${companyName}.temppseudo`,
+			email: null,
+			firstname: null,
+			lastname: null,
+			pseudonyme: null,
+			gender: null,
+			phone: null,
+			address: null,
 			password: hashedPassword,
 			companyName: companyName,
 			role: "admin",
@@ -70,6 +73,7 @@ const newCompanyController = async (req, res) => {
 		// Create a new company
 		const newCompany = new companyModel({
 			companyName,
+			siret: null,
 			password: hashedPassword,
 			userId: newUser._id,
 		});
@@ -196,7 +200,7 @@ const archiveCompanyController = async (req, res) => {
 				firstname: user.firstname,
 				lastname: user.lastname,
 				pseudonyme: user.pseudonyme,
-				sexe: user.sexe,
+				gender: user.gender,
 				password: user.password,
 				companyName: user.companyName,
 				role: user.role,
@@ -266,7 +270,7 @@ const restoreCompanyArchivedController = async (req, res) => {
 				firstname: archivedUser.firstname,
 				lastname: archivedUser.lastname,
 				pseudonyme: archivedUser.pseudonyme,
-				sexe: archivedUser.sexe,
+				gender: archivedUser.gender,
 				password: archivedUser.password,
 				companyName: archivedUser.companyName,
 				role: archivedUser.role,
@@ -352,103 +356,174 @@ const firstConnectionCompanyController = async (req, res) => {
 	}
 };
 
+// TODO: SIMPLIFIER LA FONCTION CONFIRMCOMPANYCONTROLLER
 const confirmCompanyController = async (req, res) => {
 	try {
-		const {
-			companyId,
-			email,
-			firstname,
-			lastname,
-			pseudonyme,
-			sexe,
-			password,
-		} = req.body;
+		const { confirmCompanyForm } = req.body;
 
-		if (
-			!companyId ||
-			!email ||
-			!firstname ||
-			!lastname ||
-			!pseudonyme ||
-			!sexe ||
-			!password
-		) {
+		// Vérification des paramètres
+		if (!confirmCompanyForm.companyId) {
 			return res.status(400).json({
 				response: false,
 				errorType: "missing",
-				message: "Champs obligatoires manquant !",
-				isConfirmed: false,
 			});
 		}
 
-		const company = await companyModel.findById(companyId);
+		// Recherche de l'entreprise dans la base de données
+		const company = await companyModel.findById(confirmCompanyForm.companyId);
 
+		// Si l'entreprise n'existe pas
 		if (!company) {
 			return res.status(404).json({
 				response: false,
 				errorType: "company_not_found",
-				message: "Entreprise non trouvée !",
-				isConfirmed: false,
 			});
 		}
 
-		// Create admin user for the company
-		const reqForUser = {
-			body: {
-				email,
-				firstname,
-				lastname,
-				pseudonyme,
-				sexe,
-				password,
-				company: company.companyName,
-			},
-		};
+		// Vérifier que toutes les données obligatoires sont présentes pour passer isConfirmed en true
+		const requiredFields = [
+			"companyId",
+			"companyName",
+			"fname",
+			"lname",
+			"email",
+			"password",
+			"address",
+			"phone",
+			"pseudonyme",
+		];
 
-		const resForUser = {
-			status: (statusCode) => ({
-				json: (data) => ({ statusCode, data }),
-			}),
-		};
+		const isFormValid = requiredFields.every(
+			(field) => confirmCompanyForm[field]
+		);
 
-		const userResponse = await addUserController(reqForUser, resForUser);
+		if (isFormValid) {
+			// Enregistrer les données company & user et passer isConfirmed en true
+			company.updatedAt = new Date();
+			company.siret = confirmCompanyForm.siret;
+			company.isConfirmed = true;
+			await company.save();
 
-		if (userResponse.statusCode !== 201) {
-			return res.status(userResponse.statusCode).json({
-				response: false,
-				errorType: "user_creation_from_company",
-				message: "Erreur lors de la création de l'utilisateur admin !",
-				isConfirmed: false,
+			const user = await userModel.findOne({
+				companyName: company.companyName,
+				role: "admin",
+			});
+
+			if (user) {
+				user.firstname = confirmCompanyForm.fname;
+				user.lastname = confirmCompanyForm.lname;
+				user.email = confirmCompanyForm.email;
+				user.address = confirmCompanyForm.address;
+				user.phone = confirmCompanyForm.phone;
+				user.pseudonyme = confirmCompanyForm.pseudonyme;
+				user.gender = confirmCompanyForm.gender;
+				await user.save();
+			}
+
+			return res.status(200).json({
+				response: true,
+				message: "Formulaire de confirmation validé !",
+			});
+		} else {
+			company.updatedAt = new Date();
+			company.siret = confirmCompanyForm.siret;
+			company.isConfirmed = false;
+
+			// Enregistrer les données company & user sans passer isConfirmed en true
+			const user = await userModel.findOne({
+				companyName: company.companyName,
+				role: "admin",
+			});
+
+			if (user) {
+				user.firstname = confirmCompanyForm.fname;
+				user.lastname = confirmCompanyForm.lname;
+				user.email = confirmCompanyForm.email;
+				user.address = confirmCompanyForm.address;
+				user.phone = confirmCompanyForm.phone;
+				user.pseudonyme = confirmCompanyForm.pseudonyme;
+				user.gender = confirmCompanyForm.gender;
+				await user.save();
+			}
+
+			await company.save();
+			return res.status(200).json({
+				response: true,
+				message: "Formulaire de confirmation enregistré !",
 			});
 		}
-
-		company.isConfirmed = true;
-		company.updatedAt = new Date();
-		await company.save();
-
-		return res.status(200).json({
-			response: true,
-			message: "Donnée 'company' mise à jour avec succès !",
-			isConfirmed: true,
-		});
 	} catch (error) {
 		console.error("Erreur lors de la confirmation de l'entreprise :", error);
 		return res.status(500).json({
 			response: false,
 			message: "Erreur serveur",
-			isConfirmed: false,
 			error: error.message,
 		});
 	}
 };
 
-// TODO: AFTER
 const getConfirmCompanyFormController = async (req, res) => {
-	console.log("Requête reçue depuis Angular:", req.query.companyId);
-	res.status(200).json({
-		response: true,
-		message: "Formulaire de confirmation de l'entreprise",
-	});
+	try {
+		const { companyId } = req.query;
+
+		if (!companyId) {
+			return res.status(400).json({
+				response: false,
+				errorType: "missing",
+				message: "companyId est requis !",
+			});
+		}
+
+		// Récupérer les données company avec l'companyId
+		const companyData = await companyModel.findById(companyId);
+
+		if (!companyData) {
+			return res.status(404).json({
+				response: false,
+				errorType: "company_not_found",
+				message: "Entreprise non trouvée.",
+			});
+		}
+
+		// Récupérer les données user avec le companyName & admin
+		const userData = await userModel.findOne({
+			companyName: companyData.companyName,
+			role: "admin",
+		});
+
+		if (!userData) {
+			return res.status(404).json({
+				response: false,
+				errorType: "user_not_found",
+				message: "Utilisateur non trouvé.",
+			});
+		}
+
+		return res.status(200).json({
+			response: true,
+			message: "Données formulaire 'confirmCompany' récupérées avec succès !",
+			confirmCompanyForm: {
+				companyId: companyData._id,
+				companyName: companyData.companyName,
+				fname: userData.firstname,
+				lname: userData.lastname,
+				email: userData.email,
+				password: companyData.password,
+				address: userData.address,
+				phone: userData.phone,
+				siret: companyData.siret,
+				numberOfEmployees: 1, // TODO: Récupérer le nombre d'employés
+				gender: userData.gender,
+				pseudonyme: userData.pseudonyme,
+			},
+		});
+	} catch (error) {
+		console.error("Erreur lors de la récupération des données:", error);
+		res.status(500).json({
+			response: false,
+			message: "Erreur interne du serveur.",
+		});
+	}
 };
 
 module.exports = {
