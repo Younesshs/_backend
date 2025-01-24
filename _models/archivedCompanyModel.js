@@ -11,6 +11,7 @@ const companySchema = new Schema({
 	password: { type: String, required: false }, // Vous devrez hasher ce mot de passe avant de l'enregistrer
 	isConfirmed: { type: Boolean, default: false },
 	userId: { type: Schema.Types.ObjectId, ref: "users", required: true },
+	siret: { type: String, sparse: true },
 	createdAt: { type: Date, required: true },
 	updatedAt: { type: Date, required: true },
 	archivedAt: { type: Date, default: Date.now },

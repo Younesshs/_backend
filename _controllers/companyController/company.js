@@ -182,6 +182,7 @@ const archiveCompanyController = async (req, res) => {
 			password: company.password,
 			isConfirmed: company.isConfirmed,
 			userId: company.userId,
+			siret: company.siret,
 			createdAt: company.createdAt,
 			updatedAt: new Date(),
 		});
@@ -202,6 +203,8 @@ const archiveCompanyController = async (req, res) => {
 				lastname: user.lastname,
 				pseudonyme: user.pseudonyme,
 				gender: user.gender,
+				phone: user.phone,
+				address: user.address,
 				password: user.password,
 				companyName: user.companyName,
 				role: user.role,
@@ -253,6 +256,7 @@ const restoreCompanyArchivedController = async (req, res) => {
 			password: archivedCompany.password,
 			isConfirmed: archivedCompany.isConfirmed,
 			userId: archivedCompany.userId,
+			siret: archivedCompany.siret,
 			createdAt: archivedCompany.createdAt,
 			updatedAt: new Date(),
 		});
@@ -272,6 +276,8 @@ const restoreCompanyArchivedController = async (req, res) => {
 				lastname: archivedUser.lastname,
 				pseudonyme: archivedUser.pseudonyme,
 				gender: archivedUser.gender,
+				phone: archivedUser.phone,
+				address: archivedUser.address,
 				password: archivedUser.password,
 				companyName: archivedUser.companyName,
 				role: archivedUser.role,

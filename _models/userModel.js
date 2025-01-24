@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// TODO: Mettre à jours les archives !
-
 const userSchema = new Schema(
 	{
 		email: {
