@@ -49,6 +49,9 @@ async function run() {
 				vehicleStatus: {
 					engineOn: false,
 				},
+				companyInformations: {
+					id: "6793d0433eef73e98624357a",
+				},
 			},
 			{
 				navigation: {
@@ -86,6 +89,9 @@ async function run() {
 				},
 				vehicleStatus: {
 					engineOn: false,
+				},
+				companyInformations: {
+					id: "6793d0433eef73e98624357a",
 				},
 			},
 			{
@@ -125,6 +131,9 @@ async function run() {
 				vehicleStatus: {
 					engineOn: false,
 				},
+				companyInformations: {
+					id: "6793d0433eef73e98624357a",
+				},
 			},
 			{
 				navigation: {
@@ -162,6 +171,9 @@ async function run() {
 				},
 				vehicleStatus: {
 					engineOn: false,
+				},
+				companyInformations: {
+					id: "6793d0433eef73e98624357a",
 				},
 			},
 			{
@@ -201,6 +213,9 @@ async function run() {
 				vehicleStatus: {
 					engineOn: false,
 				},
+				companyInformations: {
+					id: "6793d0433eef73e98624357a",
+				},
 			},
 			{
 				navigation: {
@@ -238,6 +253,9 @@ async function run() {
 				},
 				vehicleStatus: {
 					engineOn: false,
+				},
+				companyInformations: {
+					id: "6793d0433eef73e98624357a",
 				},
 			},
 			{
@@ -277,6 +295,9 @@ async function run() {
 				vehicleStatus: {
 					engineOn: false,
 				},
+				companyInformations: {
+					id: "6793dd4b3eef73e9862435a0",
+				},
 			},
 			{
 				navigation: {
@@ -314,6 +335,9 @@ async function run() {
 				},
 				vehicleStatus: {
 					engineOn: false,
+				},
+				companyInformations: {
+					id: "6793dd4b3eef73e9862435a0",
 				},
 			},
 			{
@@ -353,6 +377,9 @@ async function run() {
 				vehicleStatus: {
 					engineOn: false,
 				},
+				companyInformations: {
+					id: "6793dd4b3eef73e9862435a0",
+				},
 			},
 			{
 				navigation: {
@@ -390,6 +417,9 @@ async function run() {
 				},
 				vehicleStatus: {
 					engineOn: false,
+				},
+				companyInformations: {
+					id: "6793dd4b3eef73e9862435a0",
 				},
 			},
 		];

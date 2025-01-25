@@ -137,7 +137,6 @@ async function readFile(gpsTrackerNumber, numberOfLocationHistories = 10) {
 			locationHistory,
 		};
 	} catch (error) {
-		console.log(gpsTrackerNumber);
 		console.error(
 			`Erreur lors de la lecture du fichier ${gpsTrackerNumber}:`,
 			error
@@ -163,7 +162,7 @@ async function writeFile(gpsTrackerNumber, locations) {
 	try {
 		// Écriture des lignes de coordonnées dans le fichier en ajout
 		await fs.promises.appendFile(filePath, lines.join("\n") + "\n", "utf-8");
-		console.log(`Coordonnées ajoutées pour le tracker ${gpsTrackerNumber}`);
+		console.info(`Coordonnées ajoutées pour le tracker ${gpsTrackerNumber}`);
 	} catch (error) {
 		console.error(
 			`Erreur lors de l'écriture dans le fichier ${gpsTrackerNumber}:`,
@@ -212,7 +211,7 @@ async function archiveFile(gpsTrackerNumber) {
 	// Déplacer le fichier vers le dossier d'archive
 	try {
 		await fs.promises.rename(sourceFilePath, archiveFilePath);
-		console.log(`Fichier archivé pour le tracker ${gpsTrackerNumber}`);
+		console.info(`Fichier archivé pour le tracker ${gpsTrackerNumber}`);
 	} catch (error) {
 		console.error(
 			`Erreur lors de l'archivage du fichier ${gpsTrackerNumber}:`,
@@ -236,13 +235,15 @@ async function addInitialFile(gpsTrackerNumber, initialLocation) {
 	try {
 		// Vérifie si le fichier existe déjà
 		await fs.promises.access(filePath, fs.constants.F_OK);
-		console.log(`Le fichier ${gpsTrackerNumber} existe déjà.`);
+		console.info(`Le fichier ${gpsTrackerNumber} existe déjà.`);
 	} catch (error) {
 		if (error.code === "ENOENT") {
 			// Le fichier n'existe pas, le créer avec la ligne initiale
 			try {
 				await fs.promises.writeFile(filePath, initialLine + "\n", "utf-8");
-				console.log(`Fichier initial créé pour le tracker ${gpsTrackerNumber}`);
+				console.info(
+					`Fichier initial créé pour le tracker ${gpsTrackerNumber}`
+				);
 			} catch (writeError) {
 				console.error(
 					`Erreur lors de la création du fichier ${gpsTrackerNumber}:`,

@@ -77,6 +77,9 @@ const loginUserController = async (req, res) => {
 			company: {
 				companyIsConfirmed: companyData.isConfirmed,
 				companyName: user.companyName,
+				companyId: companyData._id,
+				createdAt: companyData.createdAt,
+				updatedAt: companyData.updatedAt,
 			},
 		});
 	} catch (error) {

@@ -12,8 +12,12 @@ const locationsController = require("../locationController/location");
  * @returns {Object[]} Liste des véhicules avec leurs informations et localisations
  */
 const getAllVehiclesController = async (req, res) => {
+	const companyId = req.query.companyId;
+
 	try {
-		const vehicles = await VehicleModel.find({});
+		const vehicles = await VehicleModel.find({
+			"companyInformations.id": companyId,
+		});
 
 		const gpsTrackerNumberList = vehicles.map(
 			(vehicle) => vehicle.gpsTracker.number
