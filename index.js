@@ -34,7 +34,9 @@ app.use("/user", userRoutes);
 app.listen(serverInfo.port.server, () => {
 	console.log();
 	console.info(
-		"[SERVER] Server started on port " + serverInfo.port.server + " ..."
+		"[SERVER] Server (locate-them) started on port " +
+			serverInfo.port.server +
+			" ..."
 	);
 	console.log();
 });
