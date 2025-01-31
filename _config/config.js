@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const serverInfo = {
 	port: {
 		server: process.env.PORT || 3000,
@@ -13,9 +11,7 @@ const serverInfo = {
 		database: process.env.DB_NAME || "new",
 	},
 	jwt: {
-		secret: "manage",
-		time: 0.011,
-		refreshTime: 1,
+		secret: "manager",
 	},
 };
 

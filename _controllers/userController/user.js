@@ -2,7 +2,7 @@ const userModel = require("../../_models/userModel");
 const companyModel = require("../../_models/companyModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const serverInfo = require("../../_config/config");
+require("dotenv").config();
 
 const loginUserController = async (req, res) => {
 	try {
@@ -64,7 +64,7 @@ const loginUserController = async (req, res) => {
 			updatedAt: user.updatedAt, // Vous pouvez ajouter des propriétés spécifiques de l'utilisateur
 		};
 
-		const token = jwt.sign(tokenPayload, serverInfo.jwt.secret, {
+		const token = jwt.sign(tokenPayload, process.env.jwt_secret, {
 			expiresIn: stayLogin ? "24h" : "2h", // Expiration du token (2 heures dans cet exemple)
 		});
 

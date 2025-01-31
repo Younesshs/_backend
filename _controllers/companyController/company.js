@@ -4,7 +4,7 @@ const archivedCompanyModel = require("../../_models/archivedCompanyModel");
 const archivedUserModel = require("../../_models/archivedUserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const serverInfo = require("../../_config/config");
+require("dotenv").config();
 
 const regeneratePassword = async (companyName) => {
 	const timestamp = Math.floor(Date.now() / 1000); // Horodatage en secondes
@@ -347,7 +347,7 @@ const firstConnectionCompanyController = async (req, res) => {
 			companyUpdatedAt: company.updatedAt,
 		};
 
-		const companyToken = jwt.sign(companyTokenPayload, serverInfo.jwt.secret, {
+		const companyToken = jwt.sign(companyTokenPayload, process.env.jwt_secret, {
 			expiresIn: "2h", // Expiration du token (2 heures dans cet exemple)
 		});
 
