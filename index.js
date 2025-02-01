@@ -1,4 +1,6 @@
-require("dotenv").config();
+require("dotenv").config({
+	path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
+});
 const express = require("express");
 const session = require("express-session");
 const bodyparser = require("body-parser");
@@ -64,13 +66,19 @@ udpServer.on("error", (err) => {
 });
 
 // Démarrer le serveur UDP
-udpServer.bind(process.env.port_udp, process.env.host_udp, () => {
-	const now = new Date();
-	console.log("######", now.toTimeString().split(" ")[0]); // afficher la date hh:mm:ss
-	console.log(
-		`[SERVER] UDP Server started on ${process.env.host_udp}:${process.env.port_udp}`
-	);
-});
+udpServer.bind(
+	process.env.port_udp || 8080,
+	process.env.host_udp || "0.0.0.0",
+	() => {
+		const now = new Date();
+		console.log("######", now.toTimeString().split(" ")[0]); // afficher la date hh:mm:ss
+		console.log(
+			`[SERVER] UDP Server started on ${
+				process.env.host_udp || "HOST_UDP_UNDEFINED"
+			}:${process.env.port_udp || "PORT_UDP_UNDEFINED"}`
+		);
+	}
+);
 
 // Connect to MongoDB
 connectDB();
@@ -95,8 +103,9 @@ app.use("/company", companyRoutes);
 app.use("/user", userRoutes);
 app.use("/trackers", trackersRoutes);
 
-app.listen(process.env.port, () => {
+app.listen(process.env.port || 3000, () => {
 	console.info(
-		"[SERVER] Server (locate-them) started on port " + process.env.port + " ..."
+		"[SERVER] Server (locate-them) started on port " + process.env.port ||
+			"PORT_UNDEFINED" + " ..."
 	);
 });

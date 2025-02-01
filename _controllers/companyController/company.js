@@ -4,7 +4,9 @@ const archivedCompanyModel = require("../../_models/archivedCompanyModel");
 const archivedUserModel = require("../../_models/archivedUserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+require("dotenv").config({
+	path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
+});
 
 const regeneratePassword = async (companyName) => {
 	const timestamp = Math.floor(Date.now() / 1000); // Horodatage en secondes

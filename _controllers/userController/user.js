@@ -2,7 +2,9 @@ const userModel = require("../../_models/userModel");
 const companyModel = require("../../_models/companyModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+require("dotenv").config({
+	path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
+});
 
 const loginUserController = async (req, res) => {
 	try {
