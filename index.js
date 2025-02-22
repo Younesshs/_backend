@@ -8,6 +8,7 @@ const cors = require("cors");
 const vehicleRoutes = require("./_routes/vehicleRoutes");
 const companyRoutes = require("./_routes/companyRoutes");
 const locationRoutes = require("./_routes/locationRoutes");
+const testsRoutes = require("./_routes/testsRoutes");
 const userRoutes = require("./_routes/userRoutes");
 const connectDB = require("./_utils/db");
 const dgram = require("dgram"); // UDP library
@@ -102,6 +103,7 @@ app.use("/location", locationRoutes);
 app.use("/company", companyRoutes);
 app.use("/user", userRoutes);
 app.use("/trackers", trackersRoutes);
+app.use("/tests", testsRoutes);
 
 app.listen(process.env.port || 3000, () => {
 	console.info(
