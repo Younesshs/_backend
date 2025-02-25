@@ -1,6 +1,8 @@
 require("dotenv").config({
-	path: ".env",
+	path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
 });
+
+console.log("PORT", process.env.PORT);
 
 const express = require("express");
 const session = require("express-session");
