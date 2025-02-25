@@ -7,7 +7,7 @@
 		"devv": "nodemon --env-file=env/.env ./index.js",
 		"prdd": "nodemon --env-file=env/.env.prd ./index.js",
 		"dev": "nodemon -r dotenv/config ./index.js",
-		"prd": "cross-env NODE_ENV=production node -r dotenv/config ./index.js"
+		"prd": "cross-env NODE_ENV=production dotenv -c .env.production node ./index.js"
 	},
 	"author": "",
 	"license": "ISC",
