@@ -81,15 +81,15 @@ udpServer.on("error", (err) => {
 
 // Démarrer le serveur UDP
 udpServer.bind(
-	process.env.port_udp || 8080,
-	process.env.host_udp || "0.0.0.0",
+	process.env.PORT_UDP || 8080,
+	process.env.HOST_UDP || "0.0.0.0",
 	() => {
 		const now = new Date();
 		console.log("######", now.toTimeString().split(" ")[0]); // afficher la date hh:mm:ss
 		console.log(
 			`[SERVER] UDP Server started on ${
-				process.env.host_udp || "HOST_UDP_UNDEFINED"
-			}:${process.env.port_udp || "PORT_UDP_UNDEFINED"}`
+				process.env.HOST_UDP || "HOST_UDP_UNDEFINED"
+			}:${process.env.PORT_UDP || "PORT_UDP_UNDEFINED"}`
 		);
 	}
 );
@@ -118,9 +118,9 @@ app.use("/user", userRoutes);
 app.use("/trackers", trackersRoutes);
 app.use("/tests", testsRoutes);
 
-app.listen(process.env.port || 3000, () => {
+app.listen(process.env.PORT || 3000, () => {
 	console.info(
-		"[SERVER] Server (locate-them) started on port " + process.env.port ||
+		"[SERVER] Server (locate-them) started on port " + process.env.PORT ||
 			"PORT_UNDEFINED" + " ..."
 	);
 });
