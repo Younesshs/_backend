@@ -2,18 +2,6 @@ require("dotenv").config({
 	path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
 });
 
-console.log("NODE_ENV", process.env.NODE_ENV || "No Variable");
-console.log("PORT", process.env.PORT || "No Variable");
-console.log("DB_PORT", process.env.DB_PORT || "No Variable");
-console.log("DB_SERVER", process.env.DB_SERVER || "No Variable");
-console.log("DB_HOST", process.env.DB_HOST || "No Variable");
-console.log("DB_USER", process.env.DB_USER || "No Variable");
-console.log("DB_PASSWORD", process.env.DB_PASSWORD || "No Variable");
-console.log("DB_NAME", process.env.DB_NAME || "No Variable");
-console.log("JWT_SECRET", process.env.JWT_SECRET || "No Variable");
-console.log("PORT_UDP", process.env.PORT_UDP || "No Variable");
-console.log("HOST_UDP", process.env.HOST_UDP || "No Variable");
-
 const express = require("express");
 const session = require("express-session");
 const bodyparser = require("body-parser");
