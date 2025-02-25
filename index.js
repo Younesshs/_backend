@@ -1,7 +1,5 @@
 require("dotenv").config({ path: ".env" });
 
-console.log("PORT: ", process.env.PORT);
-
 const express = require("express");
 const session = require("express-session");
 const bodyparser = require("body-parser");
