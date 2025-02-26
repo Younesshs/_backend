@@ -66,7 +66,7 @@ const loginUserController = async (req, res) => {
 			updatedAt: user.updatedAt, // Vous pouvez ajouter des propriétés spécifiques de l'utilisateur
 		};
 
-		const token = jwt.sign(tokenPayload, process.env.jwt_secret, {
+		const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
 			expiresIn: stayLogin ? "24h" : "2h", // Expiration du token (2 heures dans cet exemple)
 		});
 

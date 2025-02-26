@@ -349,7 +349,7 @@ const firstConnectionCompanyController = async (req, res) => {
 			companyUpdatedAt: company.updatedAt,
 		};
 
-		const companyToken = jwt.sign(companyTokenPayload, process.env.jwt_secret, {
+		const companyToken = jwt.sign(companyTokenPayload, process.env.JWT_SECRET, {
 			expiresIn: "2h", // Expiration du token (2 heures dans cet exemple)
 		});
 
