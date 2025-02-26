@@ -118,9 +118,11 @@ const regeneratePasswordCompanyController = async (req, res) => {
 				errorType: "missing",
 				message: "Champs obligatoires manquant !",
 			});
-		} else {
-			companyNameForPassword = companyName.toLowerCase().replace(/\s+/g, "");
 		}
+
+		const companyNameForPassword = companyName
+			.toLowerCase()
+			.replace(/\s+/g, "");
 
 		// Recherche de l'entreprise dans la base de données
 		const company = await companyModel.findOne({ companyName });
@@ -131,21 +133,37 @@ const regeneratePasswordCompanyController = async (req, res) => {
 				errorType: "not_found",
 				message: "Entreprise non trouvée !",
 			});
-		} else {
-			const { tempPassword, hashedPassword } = await regeneratePassword(
-				companyNameForPassword
-			);
-
-			company.password = hashedPassword;
-			company.updatedAt = new Date();
-			await company.save();
-
-			return res.status(200).json({
-				response: true,
-				message: "Mot de passe régénéré avec succès !",
-				password: tempPassword,
-			});
 		}
+
+		// Génération du nouveau mot de passe
+		const { tempPassword, hashedPassword } = await regeneratePassword(
+			companyNameForPassword
+		);
+
+		// Mise à jour du mot de passe de l'entreprise
+		company.password = hashedPassword;
+		company.updatedAt = new Date();
+		await company.save();
+
+		// Mise à jour du mot de passe de tous les utilisateurs associés à l'entreprise
+		const users = await userModel.find({ companyName: companyName });
+
+		if (users.length > 0) {
+			await Promise.all(
+				users.map(async (user) => {
+					user.password = hashedPassword;
+					user.updatedAt = new Date();
+					await user.save();
+				})
+			);
+		}
+
+		return res.status(200).json({
+			response: true,
+			message:
+				"Mot de passe régénéré avec succès pour entreprise et ses utilisateurs !",
+			password: tempPassword,
+		});
 	} catch (error) {
 		console.error("Erreur lors de la régénération du mot de passe :", error);
 		return res.status(500).json({
