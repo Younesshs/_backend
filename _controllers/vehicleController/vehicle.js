@@ -171,6 +171,7 @@ const getVehicleController = async (req, res) => {
  * @returns {Object} Message confirmant l'ajout du véhicule ou un message d'erreur
  */
 const addVehicleController = async (req, res) => {
+	// TODO: companyInformations
 	try {
 		const vehicleData = req.body;
 

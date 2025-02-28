@@ -39,6 +39,9 @@ const vehicleSchema = new Schema({
 	vehicleStatus: {
 		engineOn: { type: Boolean, default: false },
 	},
+	companyInformations: {
+		id: { type: String, required: true },
+	},
 });
 
 const VehicleModel = mongoose.model("vehicle", vehicleSchema);

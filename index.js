@@ -27,18 +27,13 @@ udpServer.on("message", (message, remote) => {
 	const longitude = parts[7];
 	const speed = parts[9];
 
-	console.log(
-		`Données reçues de ${remote.address}:${remote.port} - ${message}`
-	);
+	console.log(`Données reçues de ${remote.address}:${remote.port} -`);
 	console.log(`Données brutes : ${data}`);
-	console.log(
-		`IMEI: ${imei}, Latitude: ${latitude}, Longitude: ${longitude}, Vitesse: ${speed}`
-	);
 
 	const timestamp = new Date().toISOString();
 	const dataLine = `${longitude},${latitude},${timestamp}`;
 
-	console.log(`Ligne de données pour fichier`, dataLine);
+	// console.log(`Ligne de données pour fichier`, dataLine);
 
 	const folderPath = "../_backend/data/vehiclesLocations/";
 	const filePath = path.join(folderPath, `${imei}.txt`);
@@ -53,7 +48,7 @@ udpServer.on("message", (message, remote) => {
 		if (err) {
 			console.error(`Erreur lors de l'écriture des données trackers : ${err}`);
 		} else {
-			console.log(`Ecriture des données réussie pour le tracker IMEI: ${imei}`);
+			// console.log(`Ecriture des données réussie pour le tracker IMEI: ${imei}`);
 		}
 	});
 });
